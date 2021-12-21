@@ -66,17 +66,17 @@ impl BitVec {
 
     #[inline]
     pub fn with_capacity(capacity : usize) -> Self {
-        BitVec{storage : Vec::with_capacity((capacity >> 3) + 1), next_bit : 32}
+        BitVec{storage : Vec::with_capacity((capacity >> 5) + 1), next_bit : 32}
     }
 
     #[inline]
     pub fn zeroes(amount : u128) -> Self {
-        BitVec{storage : vec![Bits32::zeroes(); (amount >> 3) as usize], next_bit : (amount & 7) as u8}
+        BitVec{storage : vec![Bits32::zeroes(); (amount >> 5) as usize], next_bit : (amount & 31) as u8}
     }
 
     #[inline]
     pub fn ones(amount : u128) -> Self {
-        BitVec{storage : vec![Bits32::ones(); (amount >> 3) as usize], next_bit : (amount & 7) as u8}
+        BitVec{storage : vec![Bits32::ones(); (amount >> 5) as usize], next_bit : (amount & 31) as u8}
     }
 
     #[inline]
@@ -88,14 +88,14 @@ impl BitVec {
     pub fn get(&self, i : u128) -> Option<bool> {
         if i >= self.len() {return None} 
 
-        Some(self.storage[(i >> 3) as usize].get((i & 7) as u8))
+        Some(self.storage[(i >> 5) as usize].get((i & 31) as u8))
     }
 
     #[inline]
     pub fn set(&mut self, i : u128, val : bool) -> Result<(), Error>{
         if i >= self.len() {return Err(IndexError)} 
 
-        self.storage[(i >> 3) as usize].set((i & 7) as u8, val);
+        self.storage[(i >> 5) as usize].set((i & 31) as u8, val);
         Ok(())    
     }
 
