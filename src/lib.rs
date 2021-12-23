@@ -66,17 +66,17 @@ impl BitVec {
 
     #[inline]
     pub fn with_capacity(capacity : usize) -> Self {
-        BitVec{storage : Vec::with_capacity((capacity >> 5) + 1), next_bit : 32}
+        BitVec{storage : Vec::with_capacity((capacity + 31) >> 5), next_bit : 32}
     }
 
     #[inline]
     pub fn zeroes(amount : u128) -> Self {
-        BitVec{storage : vec![Bits32::zeroes(); (amount >> 5) as usize], next_bit : (amount & 31) as u8}
+        BitVec{storage : vec![Bits32::zeroes(); ((amount + 31) >> 5) as usize], next_bit : (amount & 31) as u8}
     }
 
     #[inline]
     pub fn ones(amount : u128) -> Self {
-        BitVec{storage : vec![Bits32::ones(); (amount >> 5) as usize], next_bit : (amount & 31) as u8}
+        BitVec{storage : vec![Bits32::ones(); ((amount + 31) >> 5) as usize], next_bit : (amount & 31) as u8}
     }
 
     #[inline]
