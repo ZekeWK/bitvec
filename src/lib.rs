@@ -65,8 +65,8 @@ impl BitVec {
     }
 
     #[inline]
-    pub fn with_capacity(capacity : usize) -> Self {
-        BitVec{storage : Vec::with_capacity((capacity + 31) >> 5), next_bit : 32}
+    pub fn with_capacity(capacity : u128) -> Self {
+        BitVec{storage : Vec::with_capacity((capacity as usize + 31) >> 5), next_bit : 32}
     }
 
     #[inline]
