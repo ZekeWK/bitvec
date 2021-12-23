@@ -71,12 +71,12 @@ impl BitVec {
 
     #[inline]
     pub fn zeroes(amount : u128) -> Self {
-        BitVec{storage : vec![Bits32::zeroes(); ((amount + 31) >> 5) as usize], next_bit : (amount & 31) as u8}
+        BitVec{storage : vec![Bits32::zeroes(); ((amount + 31) >> 5) as usize], next_bit : ((amount + 31 & 31)) as u8 + 1}
     }
 
     #[inline]
     pub fn ones(amount : u128) -> Self {
-        BitVec{storage : vec![Bits32::ones(); ((amount + 31) >> 5) as usize], next_bit : (amount & 31) as u8}
+        BitVec{storage : vec![Bits32::ones(); ((amount + 31) >> 5) as usize], next_bit : ((amount + 31) & 31) as u8 + 1}
     }
 
     #[inline]
@@ -152,5 +152,13 @@ mod tests {
         
         bit_vec.set(4, false).unwrap();
         assert!(!bit_vec.get(4).unwrap());
+    }
+
+    #[test]
+    fn zeroes_ones() {
+        for i in 0..100 {
+            assert_eq!(BitVec::zeroes(i).len(), i);
+            assert_eq!(BitVec::ones(i).len(), i);
+        }
     }
 }
