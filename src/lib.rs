@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use Error::*;
 
 #[derive(Debug, Copy, Clone)]
@@ -65,37 +66,37 @@ impl BitVec {
     }
 
     #[inline]
-    pub fn with_capacity(capacity : u128) -> Self {
-        BitVec{storage : Vec::with_capacity((capacity as usize + 31) >> 5), next_bit : 32}
+    pub fn with_capacity(capacity : usize) -> Self {
+        BitVec{storage : Vec::with_capacity((capacity + 31) >> 5), next_bit : 32}
     }
 
     #[inline]
-    pub fn zeroes(amount : u128) -> Self {
-        BitVec{storage : vec![Bits32::zeroes(); ((amount + 31) >> 5) as usize], next_bit : ((amount + 31 & 31)) as u8 + 1}
+    pub fn zeroes(amount : usize) -> Self {
+        BitVec{storage : vec![Bits32::zeroes(); (amount + 31) >> 5], next_bit : ((amount + 31 & 31)) as u8 + 1}
     }
 
     #[inline]
-    pub fn ones(amount : u128) -> Self {
-        BitVec{storage : vec![Bits32::ones(); ((amount + 31) >> 5) as usize], next_bit : ((amount + 31) & 31) as u8 + 1}
+    pub fn ones(amount : usize) -> Self {
+        BitVec{storage : vec![Bits32::ones(); (amount + 31) >> 5], next_bit : ((amount + 31) & 31) as u8 + 1}
     }
 
     #[inline]
-    pub fn len(&self) -> u128 {
-        (((self.storage.len()) as u128) << 5) + (self.next_bit as u128) -32
+    pub fn len(&self) -> usize {
+        ((self.storage.len()) << 5) + (self.next_bit as usize) -32
     }
 
     #[inline]
-    pub fn get(&self, i : u128) -> Option<bool> {
+    pub fn get(&self, i : usize) -> Option<bool> {
         if i >= self.len() {return None} 
 
-        Some(self.storage[(i >> 5) as usize].get((i & 31) as u8))
+        Some(self.storage[i >> 5].get((i & 31) as u8))
     }
 
     #[inline]
-    pub fn set(&mut self, i : u128, val : bool) -> Result<(), Error>{
+    pub fn set(&mut self, i : usize, val : bool) -> Result<(), Error>{
         if i >= self.len() {return Err(IndexError)} 
 
-        self.storage[(i >> 5) as usize].set((i & 31) as u8, val);
+        self.storage[i >> 5].set((i & 31) as u8, val);
         Ok(())    
     }
 
@@ -139,11 +140,11 @@ mod tests {
 
         for i in 0..100 {
             let len = bit_vec.len();
-            assert!(len == 2*i, format!("Length should be {}, was : {}", 2*i, len));
+            assert!(len == 2*i);
             bit_vec.push(true);
             
             let len = bit_vec.len();
-            assert!(len == 2*i+1, format!("Length should be {}, was : {}", 2*i+1, len));
+            assert!(len == 2*i+1);
             bit_vec.push(false);
         }
 
