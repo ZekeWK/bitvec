@@ -54,7 +54,7 @@ impl Bits32 {
 }
 
 #[derive(Debug)]
-struct BitVec {
+pub struct BitVec {
     storage : Vec<Bits32>,
     next_bit : u8
 }
@@ -110,7 +110,7 @@ impl BitVec {
 }
 
 #[derive(Debug, Clone, Copy)]
-enum Error {
+pub enum Error {
     IndexError
 }
 
