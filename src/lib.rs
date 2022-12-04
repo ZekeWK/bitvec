@@ -37,7 +37,7 @@ impl Bits32 {
     #[inline]
     pub fn set_on(&mut self, i : u8) {
         debug_assert!(i < 32);
-        self.int ^= 1 << i;
+        self.int |= 1 << i;
     }
 
     #[inline]
@@ -148,11 +148,13 @@ mod tests {
             bit_vec.push(false);
         }
 
-        assert!(bit_vec.get(4).unwrap());
-        assert!(!bit_vec.get(3).unwrap());
+        assert!(bit_vec.get(98).unwrap());
+        assert!(!bit_vec.get(97).unwrap());
         
-        bit_vec.set(4, false).unwrap();
-        assert!(!bit_vec.get(4).unwrap());
+        bit_vec.set(98, false).unwrap();
+        assert!(!bit_vec.get(98).unwrap());
+        bit_vec.set(97, true).unwrap();
+        assert!(bit_vec.get(97).unwrap());
     }
 
     #[test]
